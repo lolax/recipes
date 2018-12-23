@@ -1,31 +1,95 @@
 const express = require('express')
 const server = express()
 const cors = require('cors')
-server.use(cors({ origin: 'http://localhost:8080', credentials: true }))
+const db = require('./data/database.js')
+server.use(cors())
 server.use(express.json())
 
 server.get('/', (req, res) => {
   res.status(200).json({ api: 'alive' })
 })
 
-server.get('/recipes', (req, res) => {
-    res.status(200).json({ msg: "ok" })
-})
+const get = tbl => {
+    server.get(`/${tbl}`, (req, res) => {
+        db(tbl)
+            .then(items => res.status(200).json(items))
+            .catch(err => res.status(500).json(err))
+    })
+}
 
 server.get('/recipes/:id', (req, res) => {
-    res.status(200).json({ msg: "ok" })
+    const { id } = req.params
+    db('recipes')
+        .where({ id })
+        .then(recipe => res.status(200).json(recipe))
+        .catch(err => res.status(500).json(err))
 })
 
-server.post('/recipes', (req, res) => {
-    res.status(200).json({ msg: "ok" })
-})
+const getById = tbl => {
+    server.get(`/${tbl}/:id`, (req, res) => {
+        const { id } = req.params
+        db(`${tbl} as t`)
+            .join('recipes as r', 'r.id', 't.recipe_id')
+            .where('t.recipe_id', id)
+            .then(items => res.status(200).json(items))
+            .catch(err => res.status(500).json(err))
+    })
+}
 
-server.put('/recipes/:id', (req, res) => {
-    res.status(200).json({ msg: "ok" })
-})
+const add = tbl => {
+    server.post(`/${tbl}`, (req, res) => {
+        const item = req.body
+        if (item) {
+            db(tbl)
+                .insert(item)
+                .then(id => res.status(201).json(id))
+                .catch(err => res.status(500).json(err))
+        } res.status(400).json({ message: 'Please enter information.' })
+    })
+}
 
-server.delete('/recipes/:id', (req, res) => {
-    res.status(200).json({ msg: "ok" })
-})
+const update = tbl => {
+    server.put(`/${tbl}/:id`, (req, res) => {
+        const changes = req.body
+        const { id } = req.params
+        db(tbl)
+            .where({ id })
+            .update(changes)
+            .then(count => count > 0 ? 
+                res.status(200).json(count) :
+                res.status(400).json({ message: 'Update failed :(' })
+            )
+            .catch(err => res.status(500).json(err))
+    })
+}
+
+const remove = tbl => {
+    server.delete(`/${tbl}/:id`, (req, res) => {
+        const { id } = req.params
+        db(tbl)
+            .where({ id })
+            .del()
+            .then(count => count > 0 ? 
+                res.status(200).json(count) :
+                res.status(400).json({ message: 'Delete failed :(' })
+            )
+            .catch(err => res.status(500).json(err))
+    })
+}
+
+get('recipes')
+get('ingredients')
+get('steps')
+getById('ingredients')
+getById('steps')
+add('recipes')
+add('ingredients')
+add('steps')
+update('recipes')
+update('ingredients')
+update('steps')
+remove('recipes')
+remove('ingredients')
+remove('steps')
 
 module.exports = server;
