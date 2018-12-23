@@ -1,1 +1,1 @@
-# L-L-Recipes
+# L & L Recipes
