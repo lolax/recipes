@@ -1,30 +1,27 @@
 <template>
-    <div id="add-recipe">
-        <form v-bind:class="[part === 1 ? 'form' : 'hidden']">New Recipe
+    <div id="edit-recipe">
+        <form class="form">Edit Recipe
             <input 
                 class="input" 
                 type="text"
                 v-model="dish" 
-                v-on:keyup.enter="addDish"
+                v-on:keyup.enter="editRecipe"
                 placeholder="Dish"
             />
             <input 
                 class="input" 
                 type="text" 
                 v-model="description" 
-                v-on:keyup.enter="addDish"
+                v-on:keyup.enter="editRecipe"
                 placeholder="Description"
             />
             <input 
                 class="input" 
                 type="text" 
                 v-model="time" 
-                v-on:keyup.enter="addDish"
+                v-on:keyup.enter="editRecipe"
                 placeholder="Preparation Time (in minutes)"
             />
-            <div id="next" class="btn" @click="addDish">Next Steps</div>
-        </form>
-        <form v-bind:class="[part === 2 ? 'form' : 'hidden']">
             <div class="ingredients">
                 <div class="list" v-for="i in ingredients" :key="i.id">
                     <div>{{i.ingredient}} ; {{i.quantity}}</div>
@@ -67,7 +64,7 @@
                 />
                 <div class="plus" @click="addStep">+</div>
             </div>
-            <div id="submit" class="btn" @click="addRecipe">Submit Recipe</div>
+            <div id="submit" class="btn" @click="editRecipe">Submit Edits</div>
         </form>
         <div>{{this.message}}</div>
     </div>
@@ -78,7 +75,7 @@ import axios from "axios"
 export default {
     data() {
         return {
-            part: 1,
+            recipe: {},
             dish: "",
             description: "",
             time: 0,
@@ -92,19 +89,23 @@ export default {
             message: ""
         }
     },
+    mounted() {
+        const id = this.$route.params.id
+        this.recipe_id = id
+        axios
+            .get(`http://localhost:3300/recipes/${id}`)
+            .then(res => (this.recipe = res))
+            .catch(err => (this.message = err))
+        axios
+            .get(`http://localhost:3300/ingredients/${id}`)
+            .then(res => (this.ingredients = res))
+            .catch(err => (this.message = err))
+        axios
+            .get(`http://localhost:3300/steps/${id}`)
+            .then(res => (this.steps = res))
+            .catch(err => (this.message = err))
+    },
     methods: {
-        addDish() {
-            const { dish, description, time } = this
-            if (dish && description && time) {
-                const newDish = { dish, description, time }
-                axios  
-                    .post("http://localhost:3300/recipes", newDish)
-                    .then(res => (this.recipe_id = res))
-                    .catch(err => (this.message= "Recipe failed to add"))
-            } else {
-                this.message = "Please enter the dish name, description, and preparation time."
-            }
-        },
         addIngredient() {
             const { recipe_id, ingredient, quantity } = this
             if (recipe_id, ingredient, quantity) {
@@ -125,29 +126,37 @@ export default {
         },
         remove(type, id) {
             this.type.forEach((item, i) => {
-                if (item.id === id) { 
+                if (item.id === id) {
                     let index = i
                 }
             })
             this.type.splice(index, 1)
         },
         addRecipe() {
-            const { steps, ingredients } = this
-            if (steps.length > 0) {
+            const { dish, description, time, steps, ingredients, recipe_id } = this
+            if (dish && description && time) {
+                const editedDish = { dish, description, time }
                 axios  
-                    .post("http://localhost:3300/steps", steps)
-                    .then(res => (this.message = "Steps added."))
-                    .catch(err => (this.message= "Recipe failed to add."))
+                    .put(`http://localhost:3300/recipes/${recipe_id}`, editedDish)
+                    .then(res => (this.message = "Dish updated"))
+                    .catch(err => (this.message= "Recipe failed to update"))
+            } else {
+                this.message = "Please enter the dish name, description, and preparation time."
+            } if (steps.length > 0) {
+                axios  
+                    .put(`http://localhost:3300/steps/${recipe_id}`, steps)
+                    .then(res => (this.message = "Steps updated."))
+                    .catch(err => (this.message= "Recipe failed to update."))
             } else {
                 this.message = "Please add some steps."
             } if (ingredients.length > 0) {
-                axios  
-                    .post("http://localhost:3300/ingredients", ingredients)
-                    .then(res => (this.message = "Ingredients added."))
-                    .catch(err => (this.message= "Recipe failed to add."))
+                axios
+                    .put(`http://localhost:3300/ingredients/${recipe_id}`, ingredients)
+                    .then(res => (this.message = "Ingredients updated."))
+                    .catch(err => (this.message= "Recipe failed to update."))
             } else {
                 this.message = "Please add some ingredients."
-            }
+            } this.$router.push(`/recipes/${recipe_id}`)
         }
     }
 }
