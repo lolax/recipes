@@ -94,15 +94,15 @@ export default {
         this.recipe_id = id
         axios
             .get(`http://localhost:3300/recipes/${id}`)
-            .then(res => (this.recipe = res))
+            .then(res => (this.recipe = res.data))
             .catch(err => (this.message = err))
         axios
             .get(`http://localhost:3300/ingredients/${id}`)
-            .then(res => (this.ingredients = res))
+            .then(res => (this.ingredients = res.data))
             .catch(err => (this.message = err))
         axios
             .get(`http://localhost:3300/steps/${id}`)
-            .then(res => (this.steps = res))
+            .then(res => (this.steps = res.data))
             .catch(err => (this.message = err))
     },
     methods: {

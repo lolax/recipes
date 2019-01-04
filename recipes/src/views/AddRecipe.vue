@@ -99,7 +99,7 @@ export default {
                 const newDish = { dish, description, time }
                 axios  
                     .post("http://localhost:3300/recipes", newDish)
-                    .then(res => (this.recipe_id = res))
+                    .then(res => (this.recipe_id = res.data))
                     .catch(err => (this.message= "Recipe failed to add"))
             } else {
                 this.message = "Please enter the dish name, description, and preparation time."

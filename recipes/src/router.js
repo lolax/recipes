@@ -26,12 +26,12 @@ export default new Router({
       component: AddRecipe
     },
     {
-      path: '/recipe/:id',
+      path: '/recipes/:id',
       name: 'recipe',
       component: Recipe
     },
     {
-      path: '/recipe/:id/edit',
+      path: '/recipes/:id/edit',
       name: 'edit-recipe',
       component: EditRecipe
     }
