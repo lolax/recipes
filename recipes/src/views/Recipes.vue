@@ -25,16 +25,19 @@ export default {
         }
     },
     mounted() {
-        axios
-            .get("http://localhost:3300/recipes/")
-            .then(res => (this.recipes = res.data))
-            .catch(err => (this.message = err))
+        this.fetch()
     },
     methods: {
         remove(id) {
             axios
                 .delete(`http://localhost:3300/recipes/${id}`)
-                .then(res => (this.message = 'Recipe deleted'))
+                .then(res => (this.fetch()))
+                .catch(err => (this.message = err))
+        },
+        fetch() {
+            axios
+                .get("http://localhost:3300/recipes/")
+                .then(res => (this.recipes = res.data))
                 .catch(err => (this.message = err))
         }
     }
