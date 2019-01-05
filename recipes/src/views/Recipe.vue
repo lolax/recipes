@@ -14,15 +14,18 @@
                     </div>
                 </div>
                 <div class="steps">Steps
-                    <div v-for="step in steps" :key="step.id">
-                        <div>{{step.step}}</div>
-                        <div>{{step.order}}</div>
+                    <div class="step" v-for="step in steps" :key="step.id">
+                        <div>{{step.order}}. {{step.step}}</div>
                     </div>
                 </div>
             </div>
             <div class="btns">
-                <div class="btn" @click="this.$router.push(`/recipes/${recipe.id}/edit`)">edit</div>
-                <div class="btn" @click="this.remove(this.recipe.id)">delete</div>
+                <div class="btn edit" @click="$router.push(`/recipes/${recipe.id}/edit`)">
+                    <div>edit</div>
+                </div>
+                <div class="btn delete" @click="remove(recipe.id)">
+                    <div>delete</div>
+                </div>
             </div>
         </div>
         <div>{{this.message}}</div>
@@ -50,9 +53,9 @@ export default {
             .get(`http://localhost:3300/ingredients/${id}`)
             .then(res => (this.ingredients = res.data))
             .catch(err => (this.message = err))
-         axios
+        axios
             .get(`http://localhost:3300/steps/${id}`)
-            .then(res => (this.steps = res.data))
+            .then(res => (this.steps = res.data.sort((a, b) => a.order - b.order)))
             .catch(err => (this.message = err))
     },
     methods: {
@@ -83,18 +86,54 @@ export default {
     }
     .details {
         display: flex;
-        justify-content: space-evenly;
+        align-items: center;
+        flex-direction: column;
+        margin: 20px;
     }
     .ingredients {
         font-size: 20px;
         border: 1px solid lavender;
         padding: 10px;
-        width: 40%;
+        border-radius: 5px;
+        width: 50%;
+        margin: 10px;
     }
     .steps {
         font-size: 20px;
         border: 1px solid lavender;
         padding: 10px;
-        width: 40%;
+        border-radius: 5px;
+        width: 50%;
+        margin: 10px;
+    }
+    .btns {
+        display: flex;
+        justify-content: center;
+    }
+    .btn {
+        font-size: 18px;
+        display: flex;
+        margin: 10px -50px;
+        width: 100px;
+        padding: 10px;
+        height: 100px;
+        cursor: pointer;
+        background: lavender;
+        color: black;
+    }
+    .btn:hover {
+        background: black;
+        color: white;
+    }
+    .edit {
+        justify-content: start;
+        align-items: start;
+       
+        clip-path: polygon(0 0, 0 100%, 100% 0);
+    }
+    .delete {
+        justify-content: end;
+        align-items: end;
+        clip-path: polygon(100% 0, 0 100%, 100% 100%);
     }
 </style>

@@ -46,13 +46,15 @@ export default {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        padding: 10px;
+        padding: 20px;
         width: 400px;
-        margin: 10px auto;
+        margin: 30px auto;
         border: 1px solid black;
     }
     .link {
         width: 200px;
+        margin: 0;
+        padding: 0;
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -68,16 +70,23 @@ export default {
     .dish {
         font-size: 18px;
         font-weight: 600;
+        margin: 2px 0;
+    }
+    .desc {
+        margin: 2px 0;
+    }
+    .time {
+        margin: 2px 0;
     }
     .btns {
         display: flex;
         flex-direction: column;
     }
     .btn {
-        width: 100px;
+        width: 80px;
         margin: 5px auto;
         cursor: pointer;
-        padding: 5px;
+        padding: 10px;
         border: 1px solid lavender;
         color: black;
         background: white;

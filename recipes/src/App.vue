@@ -23,12 +23,14 @@
   padding: 40px 0;
 }
 .link {
+  display: inline-block;
+  width: 100px;
   margin: 0 20px;
   border: 1px solid lavender;
   text-decoration: none;
   color: black;
   background: white;
-  padding: 10px 15px;
+  padding: 15px;
   outline: 0;
   outline-offset: 0;
   transition: 200ms;
