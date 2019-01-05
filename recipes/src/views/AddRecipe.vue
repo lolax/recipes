@@ -49,7 +49,7 @@
                     </div>
                     <div class="list" v-for="i in ingredients" :key="i.id">
                         <div class="list-item">{{i.quantity}} {{i.ingredient}}</div>
-                        <div class="round-btn" @click="removeStep(i.ingredient)">-</div>
+                        <div class="round-btn" @click="removeIngredient(i.ingredient)">-</div>
                     </div>
                 </div>
                 <div class="steps">
@@ -75,7 +75,7 @@
                     </div>
                     <div class="list" v-for="s in steps" :key="s.id">
                         <div class="list-item">{{s.order}}. {{s.step}}</div>
-                        <div class="round-btn" @click="removeIngredient(s.step)">-</div>
+                        <div class="round-btn" @click="removeStep(s.step)">-</div>
                     </div>
                 </div>
             </div>
@@ -137,6 +137,7 @@ export default {
                 this.ingredients.push(newIng)
                 this.ingredient = ""
                 this.quantity = ""
+                this.message = ""
             } else {
                 this.message = "Please enter the ingredient name & quantity."
             }
@@ -149,6 +150,7 @@ export default {
                 this.steps = this.steps.sort((a, b) => a.order - b.order)
                 this.step = ""
                 this.order = ""
+                this.message = ""
             } else {
                 this.message = "Please enter the step & order."
             }

@@ -128,7 +128,6 @@ export default {
     .edit {
         justify-content: start;
         align-items: start;
-       
         clip-path: polygon(0 0, 0 100%, 100% 0);
     }
     .delete {
