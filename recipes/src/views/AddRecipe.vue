@@ -1,6 +1,6 @@
 <template>
     <div id="add-recipe">
-        <form v-bind:class="[part === 1 ? 'form' : 'hidden']">New Recipe
+        <form v-bind:class="[part === 1 ? 'form' : 'hidden']">What's Cookin?
             <input 
                 class="input" 
                 type="text"
@@ -25,47 +25,53 @@
             <div id="next" class="btn" @click="addDish">Next Steps</div>
         </form>
         <form v-bind:class="[part === 2 ? 'form' : 'hidden']">
-            <div class="ingredients">
-                <div class="list" v-for="i in ingredients" :key="i.id">
-                    <div>{{i.ingredient}} ; {{i.quantity}}</div>
-                    <div class="minus" @click="removeStep(i.ingredient)">-</div>
+            <div class="ing-steps">
+                <div class="ingredients">
+                    <div class="input-section">
+                        <input 
+                            class="input" 
+                            type="text"
+                            v-model="ingredient" 
+                            v-on:keyup.enter="addIngredient"
+                            placeholder="Ingredient"
+                        />
+                        <input 
+                            class="input" 
+                            type="text" 
+                            v-model="quantity" 
+                            v-on:keyup.enter="addIngredient"
+                            placeholder="Quantity"
+                        />
+                        <div class="round-btn" @click="addIngredient">+</div>
+                    </div>
+                    <div class="list" v-for="i in ingredients" :key="i.id">
+                        <div>{{i.ingredient}} : {{i.quantity}}</div>
+                        <div class="round-btn" @click="removeStep(i.ingredient)">-</div>
+                    </div>
                 </div>
-                <input 
-                    class="input" 
-                    type="text"
-                    v-model="ingredient" 
-                    v-on:keyup.enter="addIngredient"
-                    placeholder="Ingredient"
-                />
-                <input 
-                    class="input" 
-                    type="text" 
-                    v-model="quantity" 
-                    v-on:keyup.enter="addIngredient"
-                    placeholder="Quantity"
-                />
-                <div class="plus" @click="addIngredient">+</div>
-            </div>
-            <div class="steps">
-                <div v-for="s in steps" :key="s.id">
-                    <div>{{s.order}}. {{s.step}}</div>
-                    <div class="minus" @click="removeIngredient(s.step)">-</div>
+                <div class="steps">
+                    <div class="input-section">
+                        <input 
+                            class="input" 
+                            type="text" 
+                            v-model="step" 
+                            v-on:keyup.enter="addStep"
+                            placeholder="Step"
+                        />
+                        <input 
+                            class="input" 
+                            type="text" 
+                            v-model="order" 
+                            v-on:keyup.enter="addStep"
+                            placeholder="Order"
+                        />
+                        <div class="round-btn" @click="addStep">+</div>
+                    </div>
+                    <div class="list" v-for="s in steps" :key="s.id">
+                        <div>{{s.order}}. {{s.step}}</div>
+                        <div class="round-btn" @click="removeIngredient(s.step)">-</div>
+                    </div>
                 </div>
-                <input 
-                    class="input" 
-                    type="text" 
-                    v-model="step" 
-                    v-on:keyup.enter="addStep"
-                    placeholder="Step"
-                />
-                <input 
-                    class="input" 
-                    type="text" 
-                    v-model="order" 
-                    v-on:keyup.enter="addStep"
-                    placeholder="Order"
-                />
-                <div class="plus" @click="addStep">+</div>
             </div>
             <div id="submit" class="btn" @click="addRecipe">Submit Recipe</div>
         </form>
@@ -81,14 +87,14 @@ export default {
             part: 1,
             dish: "",
             description: "",
-            time: 0,
+            time: "",
             recipe_id: "",
             ingredients: [],
             ingredient: "",
             quantity: "",
             steps: [],
             step: "",
-            order: 0,
+            order: "",
             message: ""
         }
     },
@@ -99,9 +105,15 @@ export default {
                 const newDish = { dish, description, time }
                 axios  
                     .post("http://localhost:3300/recipes", newDish)
-                    .then(res => (this.recipe_id = res.data[0]))
+                    .then(res => {
+                        this.recipe_id = res.data[0]
+                        this.part = 2
+                        this.dish = ''
+                        this.description = ''
+                        this.time = ''
+                    })
                     .catch(err => (this.message = err))
-                this.part = 2
+                
             } else {
                 this.message = "Please enter the dish name, description, and preparation time."
             }
@@ -120,6 +132,7 @@ export default {
             if (recipe_id, step, order) {
                 const newStep = { recipe_id, step, order }
                 this.steps.push(newStep)
+                this.steps = this.steps.sort((a, b) => a.order - b.order)
             } else {
                 this.message = "Please enter the step & order."
             }
@@ -135,14 +148,20 @@ export default {
             if (steps.length > 0) {
                 axios  
                     .post("http://localhost:3300/steps", steps)
-                    .then(res => (this.message = "Recipe added."))
+                    .then(res => {
+                        this.message = "Recipe added."
+                        this.steps = []
+                    })
                     .catch(err => (this.message= "Recipe failed to add."))
             } else {
                 this.message = "Please add some steps."
             } if (ingredients.length > 0) {
                 axios  
                     .post("http://localhost:3300/ingredients", ingredients)
-                    .then(res => (this.message = "Recipe added."))
+                    .then(res => {
+                        this.message = "Recipe added."
+                        this.ingredients = []
+                    })
                     .catch(err => (this.message= "Recipe failed to add."))
             } else {
                 this.message = "Please add some ingredients."
@@ -155,8 +174,70 @@ export default {
 <style scoped>
 .form {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    margin: 40px auto;
+    width: 90%;
+    font-size: 24px;
 }
 .hidden {
     display: none;
+}
+.input {
+    width: 70%;
+    padding: 15px;
+    font-size: 18px;
+    margin: 14px 0;
+}
+.btn {
+    font-size: 16px;
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid black;
+    color: black;
+    background: white;
+}
+.btn:hover {
+    color: white;
+    background: black;
+}
+.ing-steps {
+    display: flex;
+    width: 80%;
+}
+.ingredients {
+    margin: auto;
+    width: 100%;
+}
+.steps {
+    margin: auto;
+    width: 100%;
+}
+.input-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.list {
+    display: flex;
+}
+.round-btn {
+    width: 34px;
+    height: 34px;
+    font-weight: 700;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 10px;
+    border: 1px solid grey;
+    color: grey;
+    background: white;
+}
+.round-btn:hover {
+    color: white;
+    background: grey;
+}
+#submit {
+    margin: 30px auto;
 }
 </style>

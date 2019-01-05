@@ -7,11 +7,11 @@
                 <div class="time">{{recipe.time}} minutes</div>
             </router-link>
             <div class="btns"> 
-                <div class="btn" @click="this.$router.push(`/recipes/${id}/edit`)">edit</div>
+                <div class="btn" @click="$router.push(`/recipes/${id}/edit`)">edit</div>
                 <div class="btn" @click="remove(recipe.id)">delete</div>
             </div>
         </div>
-        <div>{{this.message}}</div>
+        <div>{{message}}</div>
     </div>
 </template>
 
@@ -34,7 +34,7 @@ export default {
         remove(id) {
             axios
                 .delete(`http://localhost:3300/recipes/${id}`)
-                .then(res => (this.message = res))
+                .then(res => (this.message = 'Recipe deleted'))
                 .catch(err => (this.message = err))
         }
     }
