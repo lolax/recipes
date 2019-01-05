@@ -28,7 +28,7 @@
             <div class="ingredients">
                 <div class="list" v-for="i in ingredients" :key="i.id">
                     <div>{{i.ingredient}} ; {{i.quantity}}</div>
-                    <div class="minus" @click="remove(ingredients, i.id)">-</div>
+                    <div class="minus" @click="removeStep(i.ingredient)">-</div>
                 </div>
                 <input 
                     class="input" 
@@ -49,7 +49,7 @@
             <div class="steps">
                 <div v-for="s in steps" :key="s.id">
                     <div>{{s.order}}. {{s.step}}</div>
-                    <div class="minus" @click="remove(steps, s.id)">-</div>
+                    <div class="minus" @click="removeIngredient(s.step)">-</div>
                 </div>
                 <input 
                     class="input" 
@@ -99,8 +99,9 @@ export default {
                 const newDish = { dish, description, time }
                 axios  
                     .post("http://localhost:3300/recipes", newDish)
-                    .then(res => (this.recipe_id = res.data))
-                    .catch(err => (this.message= "Recipe failed to add"))
+                    .then(res => (this.recipe_id = res.data[0]))
+                    .catch(err => (this.message = err))
+                this.part = 2
             } else {
                 this.message = "Please enter the dish name, description, and preparation time."
             }
@@ -123,27 +124,25 @@ export default {
                 this.message = "Please enter the step & order."
             }
         },
-        remove(type, id) {
-            this.type.forEach((item, i) => {
-                if (item.id === id) { 
-                    let index = i
-                }
-            })
-            this.type.splice(index, 1)
+        removeIngredient(ing) {
+           this.ingredients = this.ingredients.filter(cur => cur.ingredient != ing)
+        },
+        removeStep(step) { 
+           this.steps = this.steps.filter(cur => cur.step != step)
         },
         addRecipe() {
             const { steps, ingredients } = this
             if (steps.length > 0) {
                 axios  
                     .post("http://localhost:3300/steps", steps)
-                    .then(res => (this.message = "Steps added."))
+                    .then(res => (this.message = "Recipe added."))
                     .catch(err => (this.message= "Recipe failed to add."))
             } else {
                 this.message = "Please add some steps."
             } if (ingredients.length > 0) {
                 axios  
                     .post("http://localhost:3300/ingredients", ingredients)
-                    .then(res => (this.message = "Ingredients added."))
+                    .then(res => (this.message = "Recipe added."))
                     .catch(err => (this.message= "Recipe failed to add."))
             } else {
                 this.message = "Please add some ingredients."

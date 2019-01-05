@@ -38,13 +38,10 @@ const getById = tbl => {
 
 const add = tbl => {
     server.post(`/${tbl}`, (req, res) => {
-        const item = req.body
-        if (item) {
-            db(tbl)
-                .insert(item)
-                .then(id => res.status(201).json(id))
-                .catch(err => res.status(500).json(err))
-        } res.status(400).json({ message: 'Please enter information.' })
+        db(tbl)
+            .insert(req.body)
+            .then(id => res.status(201).json(id))
+            .catch(err => res.status(500).json(err))
     })
 }
 
