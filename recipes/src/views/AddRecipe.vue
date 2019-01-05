@@ -28,52 +28,63 @@
             <div class="ing-steps">
                 <div class="ingredients">
                     <div class="input-section">
-                        <input 
-                            class="input" 
-                            type="text"
-                            v-model="ingredient" 
-                            v-on:keyup.enter="addIngredient"
-                            placeholder="Ingredient"
-                        />
-                        <input 
-                            class="input" 
-                            type="text" 
-                            v-model="quantity" 
-                            v-on:keyup.enter="addIngredient"
-                            placeholder="Quantity"
-                        />
-                        <div class="round-btn" @click="addIngredient">+</div>
+                        <div class="inputs">
+                            <div class="title">Ingredients</div>
+                            <input 
+                                class="input" 
+                                type="text"
+                                v-model="ingredient" 
+                                v-on:keyup.enter="addIngredient"
+                                placeholder="Ingredient"
+                            />
+                            <input 
+                                class="input" 
+                                type="text" 
+                                v-model="quantity" 
+                                v-on:keyup.enter="addIngredient"
+                                placeholder="Quantity"
+                            />
+                        </div>
+                        <div class="round-btn plus" @click="addIngredient">+</div>
                     </div>
                     <div class="list" v-for="i in ingredients" :key="i.id">
-                        <div>{{i.ingredient}} : {{i.quantity}}</div>
+                        <div class="list-item">{{i.quantity}} {{i.ingredient}}</div>
                         <div class="round-btn" @click="removeStep(i.ingredient)">-</div>
                     </div>
                 </div>
                 <div class="steps">
                     <div class="input-section">
-                        <input 
-                            class="input" 
-                            type="text" 
-                            v-model="step" 
-                            v-on:keyup.enter="addStep"
-                            placeholder="Step"
-                        />
-                        <input 
-                            class="input" 
-                            type="text" 
-                            v-model="order" 
-                            v-on:keyup.enter="addStep"
-                            placeholder="Order"
-                        />
-                        <div class="round-btn" @click="addStep">+</div>
+                        <div class="inputs">
+                            <div class="title">Steps</div>
+                            <input 
+                                class="input" 
+                                type="text" 
+                                v-model="step" 
+                                v-on:keyup.enter="addStep"
+                                placeholder="Step"
+                            />
+                            <input 
+                                class="input" 
+                                type="text" 
+                                v-model="order" 
+                                v-on:keyup.enter="addStep"
+                                placeholder="Order"
+                            />
+                        </div>
+                        <div class="round-btn plus" @click="addStep">+</div>
                     </div>
                     <div class="list" v-for="s in steps" :key="s.id">
-                        <div>{{s.order}}. {{s.step}}</div>
+                        <div class="list-item">{{s.order}}. {{s.step}}</div>
                         <div class="round-btn" @click="removeIngredient(s.step)">-</div>
                     </div>
                 </div>
             </div>
-            <div id="submit" class="btn" @click="addRecipe">Submit Recipe</div>
+            <div 
+                id="submit" 
+                v-bind:class="[steps.length > 0 && ingredients.length > 0 ? 'btn' : 'hidden']" 
+                @click="addRecipe">
+                Submit Recipe
+            </div>
         </form>
         <div>{{this.message}}</div>
     </div>
@@ -108,9 +119,9 @@ export default {
                     .then(res => {
                         this.recipe_id = res.data[0]
                         this.part = 2
-                        this.dish = ''
-                        this.description = ''
-                        this.time = ''
+                        this.dish = ""
+                        this.description = ""
+                        this.time = ""
                     })
                     .catch(err => (this.message = err))
                 
@@ -119,20 +130,25 @@ export default {
             }
         },
         addIngredient() {
+            if (this.ingredient.length > 27) { this.ingredient = this.ingredient.slice(0, 27) + "..." }
             const { recipe_id, ingredient, quantity } = this
-            if (recipe_id, ingredient, quantity) {
+            if (recipe_id && ingredient && quantity) {
                 const newIng = { recipe_id, ingredient, quantity }
                 this.ingredients.push(newIng)
+                this.ingredient = ""
+                this.quantity = ""
             } else {
                 this.message = "Please enter the ingredient name & quantity."
             }
         },
         addStep() {
             const { recipe_id, step, order } = this
-            if (recipe_id, step, order) {
+            if (recipe_id && this.step && this.order) {
                 const newStep = { recipe_id, step, order }
                 this.steps.push(newStep)
                 this.steps = this.steps.sort((a, b) => a.order - b.order)
+                this.step = ""
+                this.order = ""
             } else {
                 this.message = "Please enter the step & order."
             }
@@ -151,6 +167,7 @@ export default {
                     .then(res => {
                         this.message = "Recipe added."
                         this.steps = []
+                        this.part = 1
                     })
                     .catch(err => (this.message= "Recipe failed to add."))
             } else {
@@ -161,6 +178,7 @@ export default {
                     .then(res => {
                         this.message = "Recipe added."
                         this.ingredients = []
+                        this.part = 1
                     })
                     .catch(err => (this.message= "Recipe failed to add."))
             } else {
@@ -185,7 +203,7 @@ export default {
     display: none;
 }
 .input {
-    width: 70%;
+    width: 85%;
     padding: 15px;
     font-size: 18px;
     margin: 14px 0;
@@ -204,40 +222,59 @@ export default {
 }
 .ing-steps {
     display: flex;
-    width: 80%;
+    justify-content: space-between;
+    width: 100%;
 }
 .ingredients {
-    margin: auto;
-    width: 100%;
+    width: 42%;
+    padding: 0 20px;
+    border-right: 4px double black;
+    border-left: 4px double black;
 }
 .steps {
-    margin: auto;
-    width: 100%;
+    width: 42%;
+    padding: 0 20px;
+    border-right: 4px double black;
+    border-left: 4px double black;
 }
 .input-section {
     display: flex;
-    flex-direction: column;
     align-items: center;
+    justify-content: center;
+    padding: 0 15px 20px 0;
+}
+.plus {
+    margin-top: 32px;
 }
 .list {
+    padding-right: 15px;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 40px auto;
+    font-size: 20px;
+}
+.list-item {
+    margin: 5px 20px;
+
 }
 .round-btn {
-    width: 34px;
-    height: 34px;
+    min-width: 34px;
+    font-size: 24px;
     font-weight: 700;
     border-radius: 50%;
     cursor: pointer;
     padding: 10px;
-    border: 1px solid grey;
-    color: grey;
+    border: 1px solid #e5e5e5;
+    color: #e5e5e5;
     background: white;
 }
 .round-btn:hover {
     color: white;
-    background: grey;
+    background: #e5e5e5;
 }
 #submit {
+    width: 66px;
     margin: 30px auto;
 }
 </style>
