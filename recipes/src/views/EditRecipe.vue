@@ -157,21 +157,21 @@ export default {
                 axios  
                     .put(`http://localhost:3300/recipes/${recipe_id}`, editedDish)
                     .then(res => (this.message = "Dish updated"))
-                    .catch(err => (this.message= "Recipe failed to update"))
+                    .catch(err => (this.message = "Sorry it's borken"))
             } else {
                 this.message = "Please enter the dish name, description, and preparation time."
             } if (steps.length > 0) {
                 axios  
                     .put(`http://localhost:3300/steps/${recipe_id}`, steps)
                     .then(res => (this.message = "Steps updated."))
-                    .catch(err => (this.message= "steps failed to update."))
+                    .catch(err => (this.message = "Sorry it's borken"))
             } else {
                 this.message = "Please add some steps."
             } if (ingredients.length > 0) {
                 axios
                     .put(`http://localhost:3300/ingredients/${recipe_id}`, ingredients)
                     .then(res => (this.message = "Ingredients updated."))
-                    .catch(err => (this.message= "ing failed to update."))
+                    .catch(err => (this.message = "Sorry it's borken"))
             } else {
                 this.message = "Please add some ingredients."
             } 

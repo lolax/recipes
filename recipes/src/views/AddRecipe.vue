@@ -171,7 +171,7 @@ export default {
                         this.steps = []
                         this.part = 1
                     })
-                    .catch(err => (this.message= "Recipe failed to add."))
+                    .catch(err => (this.message = "Recipe failed to add."))
             } else {
                 this.message = "Please add some steps."
             } if (ingredients.length > 0) {
@@ -182,7 +182,7 @@ export default {
                         this.ingredients = []
                         this.part = 1
                     })
-                    .catch(err => (this.message= "Recipe failed to add."))
+                    .catch(err => (this.message = "Recipe failed to add."))
             } else {
                 this.message = "Please add some ingredients."
             }

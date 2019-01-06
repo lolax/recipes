@@ -47,11 +47,10 @@ const add = tbl => {
 
 const update = tbl => {
     server.put(`/${tbl}/:id`, (req, res) => {
-        const changes = req.body
         const { id } = req.params
         db(tbl)
             .where({ id })
-            .update(changes)
+            .update(req.body)
             .then(count => count > 0 ? 
                 res.status(200).json(count) :
                 res.status(400).json({ message: 'Update failed :(' })
