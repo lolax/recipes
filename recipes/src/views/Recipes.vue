@@ -55,7 +55,7 @@ export default {
         border: 1px solid black;
     }
     .link {
-        width: 200px;
+        width: 250px;
         margin: 0;
         padding: 0;
         display: flex;
