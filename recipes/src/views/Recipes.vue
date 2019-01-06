@@ -7,7 +7,7 @@
                 <div class="time">{{recipe.time}} minutes</div>
             </router-link>
             <div class="btns"> 
-                <div class="btn" @click="$router.push(`/recipes/${id}/edit`)">edit</div>
+                <div class="btn" @click="$router.push(`/recipes/${recipe.id}/edit`)">edit</div>
                 <div class="btn" @click="remove(recipe.id)">delete</div>
             </div>
         </div>
