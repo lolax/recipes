@@ -2,20 +2,6 @@
     <div id="welcome">
         <h1>Welcome to L & L Recipes</h1>
         <h2>artisinal, vegetarian, amature</h2>
-        <div class="images">
-            <img src="../assets/bananastand.jpg" alt="banana stand">
-            <img src="../assets/boilingwaterhotpocket.jpg" alt="hot pocket">
-            <img src="../assets/chef.png" alt="chef">
-            <img src="../assets/chefmario.png" alt="chef mario">
-            <img src="../assets/sushi.jpg" alt="sushi">
-            <img src="../assets/fieri.png" alt="guy fieri">
-            <img src="../assets/franziaoreo.jpg" alt="franzia oreos">
-            <img src="../assets/peetandcheese.jpg" alt="kraft box cat">
-            <img src="../assets/prongles.jpg" alt="prongles">
-            <img src="../assets/raisinman.jpg" alt="raisin man">
-            <img src="../assets/rumham.gif" alt="rum ham">
-            <img src="../assets/spagett.jpg" alt="spagett">
-        </div>
     </div>
 </template>
 
