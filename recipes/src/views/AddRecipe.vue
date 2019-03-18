@@ -115,7 +115,7 @@ export default {
             if (dish && description && time) {
                 const newDish = { dish, description, time }
                 axios  
-                    .post("http://localhost:3300/recipes", newDish)
+                    .post("http://localhost:3333/recipes", newDish, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => {
                         this.recipe_id = res.data[0]
                         this.part = 2
@@ -165,7 +165,7 @@ export default {
             const { steps, ingredients } = this
             if (steps.length > 0) {
                 axios  
-                    .post("http://localhost:3300/steps", steps)
+                    .post("http://localhost:3333/steps", steps, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => {
                         this.message = "Recipe added."
                         this.steps = []
@@ -176,7 +176,7 @@ export default {
                 this.message = "Please add some steps."
             } if (ingredients.length > 0) {
                 axios  
-                    .post("http://localhost:3300/ingredients", ingredients)
+                    .post("http://localhost:3333/ingredients", ingredients, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => {
                         this.message = "Recipe added."
                         this.ingredients = []
@@ -199,7 +199,8 @@ export default {
     text-align: center;
     margin: 40px auto;
     width: 90%;
-    font-size: 24px;
+    font-size: 30px;
+    color: white;
 }
 .hidden {
     display: none;
@@ -230,14 +231,12 @@ export default {
 .ingredients {
     width: 42%;
     padding: 0 20px;
-    border-right: 4px double black;
-    border-left: 4px double black;
+    border-left: 4px double white;
 }
 .steps {
     width: 42%;
     padding: 0 20px;
-    border-right: 4px double black;
-    border-left: 4px double black;
+    border-right: 4px double white;
 }
 .input-section {
     display: flex;
@@ -267,13 +266,12 @@ export default {
     border-radius: 50%;
     cursor: pointer;
     padding: 10px;
-    border: 1px solid #e5e5e5;
-    color: #e5e5e5;
+    color: black;
     background: white;
+    border: 2px solid lightgrey;
 }
 .round-btn:hover {
-    color: white;
-    background: #e5e5e5;
+    background: lightgrey;
 }
 #submit {
     width: 66px;
