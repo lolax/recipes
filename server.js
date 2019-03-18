@@ -5,8 +5,89 @@ const db = require('./data/database.js')
 server.use(cors())
 server.use(express.json())
 
+const admin = require("firebase-admin")
+const serviceAccount = require("./config.json")
+
+admin.initializeApp({
+    credential: admin.credential.cert(serviceAccount),
+    databaseURL: "https://lola-recipes.firebaseio.com"
+});
+
+const restricted = (req, res, next) => {
+    const token = req.headers.authorization
+    if (token) {
+        admin
+            .auth()
+            .verifyIdToken(token)
+            .then((decodedToken) => {
+                const uid = decodedToken.uid;
+                req.uid = uid
+                next()
+            })
+            .catch((error) => {
+                res.status(401).json({ message: 'invalid token' })
+            });
+    } else {
+        res.status(401).json({ message: 'no token' })
+    }
+}
+
+server.use(restricted)
+
 server.get('/', (req, res) => {
   res.status(200).json({ api: 'alive' })
+})
+
+server.get('/recipes', (req, res) => {
+    const { uid } = req
+    db('recipes')
+        .where({ uid })
+        .then(recipes => res.status(200).json(recipes))
+        .catch(err => res.status(500).json(err))
+})
+
+server.get('/recipes/:id', (req, res) => {
+    const { uid } = req
+    const { id } = req.params
+    db('recipes')
+        .where({ id, uid })
+        .then(recipe => res.status(200).json(recipe))
+        .catch(err => res.status(500).json(err))
+})
+
+server.post('/recipes', (req, res) => {
+    const { uid } = req
+    const { dish, description, time } = req.body
+    const newRecipe = { dish, description, time, uid }
+    db('recipes')
+        .insert(newRecipe)
+        .then(id => res.status(201).json(id))
+        .catch(err => res.status(500).json(err))
+})
+
+server.put('/recipes/:id', (req, res) => {
+    const { uid } = req
+    const { id } = req.params
+    const { dish, description, time } = req.body
+    const updatedRecipe = { dish, description, time, uid }
+    db('recipes')
+        .where({ id, uid })
+        .update(updatedRecipe)
+        .then(id => res.status(201).json(id))
+        .catch(err => res.status(500).json(err))
+})
+
+server.delete('/recipes/:id', (req, res) => {
+    const { uid } = req
+    const { id } = req.params
+    db('recipes')
+        .where({ id, uid })
+        .del()
+        .then(count => count > 0 ? 
+            res.status(200).json(count) :
+            res.status(400).json({ message: 'Delete failed :(' })
+        )
+        .catch(err => res.status(500).json(err))
 })
 
 const get = tbl => {
@@ -16,14 +97,6 @@ const get = tbl => {
             .catch(err => res.status(500).json(err))
     })
 }
-
-server.get('/recipes/:id', (req, res) => {
-    const { id } = req.params
-    db('recipes')
-        .where({ id })
-        .then(recipe => res.status(200).json(recipe))
-        .catch(err => res.status(500).json(err))
-})
 
 const getById = tbl => {
     server.get(`/${tbl}/:id`, (req, res) => {
@@ -73,18 +146,14 @@ const remove = tbl => {
     })
 }
 
-get('recipes')
 get('ingredients')
 get('steps')
 getById('ingredients')
 getById('steps')
-add('recipes')
 add('ingredients')
 add('steps')
-update('recipes')
 update('ingredients')
 update('steps')
-remove('recipes')
 remove('ingredients')
 remove('steps')
 
