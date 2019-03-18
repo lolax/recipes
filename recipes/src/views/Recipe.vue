@@ -9,8 +9,8 @@
             <div class="details">
                 <div class="ingredients">Ingredients
                     <div v-for="ing in ingredients" :key="ing.id">
-                        <div>{{ing.ingredient}}</div>
-                        <div>{{ing.quantity}}</div>
+                        <span>{{ing.quantity}}</span>
+                        <span>{{ing.ingredient}}</span>
                     </div>
                 </div>
                 <div class="steps">Steps
@@ -46,22 +46,22 @@ export default {
     mounted() {
         const id = this.$route.params.id
         axios
-            .get(`http://localhost:3300/recipes/${id}`)
+            .get(`http://localhost:3333/recipes/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
             .then(res => (this.recipe = res.data[0]))
             .catch(err => (this.message = err))
         axios
-            .get(`http://localhost:3300/ingredients/${id}`)
+            .get(`http://localhost:3333/ingredients/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
             .then(res => (this.ingredients = res.data))
             .catch(err => (this.message = err))
         axios
-            .get(`http://localhost:3300/steps/${id}`)
+            .get(`http://localhost:3333/steps/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
             .then(res => (this.steps = res.data.sort((a, b) => a.order - b.order)))
             .catch(err => (this.message = err))
     },
     methods: {
         remove(id) {
             axios
-                .delete(`http://localhost:3300/recipes/${id}`)
+                .delete(`http://localhost:3333/recipes/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
                 .then(res => (this.$router.push("/recipes/")))
                 .catch(err => (this.message = err))
         }
@@ -92,7 +92,7 @@ export default {
     }
     .ingredients {
         font-size: 20px;
-        border: 1px solid lavender;
+        border: 1px solid #8daafb;
         padding: 10px;
         border-radius: 5px;
         width: 50%;
@@ -100,7 +100,7 @@ export default {
     }
     .steps {
         font-size: 20px;
-        border: 1px solid lavender;
+        border: 1px solid #8daafb;
         padding: 10px;
         border-radius: 5px;
         width: 50%;
@@ -118,7 +118,7 @@ export default {
         padding: 10px;
         height: 100px;
         cursor: pointer;
-        background: lavender;
+        background: #8daafb;
         color: black;
     }
     .btn:hover {
@@ -134,5 +134,8 @@ export default {
         justify-content: end;
         align-items: end;
         clip-path: polygon(100% 0, 0 100%, 100% 100%);
+    }
+    span {
+        margin: 1px 3px;
     }
 </style>

@@ -30,13 +30,13 @@ export default {
     methods: {
         remove(id) {
             axios
-                .delete(`http://localhost:3300/recipes/${id}`)
+                .delete(`http://localhost:3333/recipes/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
                 .then(res => (this.fetch()))
                 .catch(err => (this.message = err))
         },
         fetch() {
             axios
-                .get("http://localhost:3300/recipes/")
+                .get("http://localhost:3333/recipes/", {headers: { Authorization: localStorage.getItem("token") }})
                 .then(res => (this.recipes = res.data))
                 .catch(err => (this.message = err))
         }
