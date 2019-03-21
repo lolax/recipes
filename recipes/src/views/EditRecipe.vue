@@ -42,7 +42,8 @@
                                 placeholder="Quantity"
                             />
                         </div>
-                        <div class="round-btn" @click="addIngredient">+</div>
+                        <div class="round-btn plus" @click="addIngredient">+</div>
+                        <div class="tablet-plus btn" @click="addIngredient">add ingredient</div>
                     </div>
                     <div class="list" v-for="i in ingredients" :key="i.id">
                         <div class="list-item">{{i.quantity}} {{i.ingredient}}</div>
@@ -67,7 +68,8 @@
                                 placeholder="Order"
                             />
                         </div>
-                        <div class="round-btn" @click="addStep">+</div>
+                        <div class="round-btn plus" @click="addStep">+</div>
+                        <div class="tablet-plus btn" @click="addStep">add step</div>
                     </div>
                     <div class="list" v-for="s in steps" :key="s.id">
                         <div class="list-item">{{s.order}}. {{s.step}}</div>
@@ -157,25 +159,24 @@ export default {
                 axios  
                     .put(`http://localhost:3333/recipes/${recipe_id}`, editedDish, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => (this.message = "Dish updated"))
-                    .catch(err => (this.message = "Sorry it's borken"))
+                    .catch(err => (this.message = "Sorry, there was an error"))
             } else {
                 this.message = "Please enter the dish name, description, and preparation time."
             } if (steps.length > 0) {
                 axios  
                     .put(`http://localhost:3333/steps/${recipe_id}`, steps, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => (this.message = "Steps updated."))
-                    .catch(err => (this.message = "Sorry it's borken"))
+                    .catch(err => (this.message = "Sorry, there was an error"))
             } else {
                 this.message = "Please add some steps."
             } if (ingredients.length > 0) {
                 axios
                     .put(`http://localhost:3333/ingredients/${recipe_id}`, ingredients, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => (this.message = "Ingredients updated."))
-                    .catch(err => (this.message = "Sorry it's borken"))
+                    .catch(err => (this.message = "Sorry, there was an error"))
             } else {
                 this.message = "Please add some ingredients."
             } 
-            //this.$router.push(`/recipes/${recipe_id}`)
         }
     }
 }
@@ -183,6 +184,7 @@ export default {
 
 <style scoped>
 .form {
+    color: white;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -224,7 +226,7 @@ export default {
     display: flex;
     padding-top: 40px;
     margin-top: 40px;
-    border-top: 4px double black;
+    border-top: 4px double white;
     justify-content: space-between;
 }
 .list {
@@ -251,16 +253,50 @@ export default {
     border-radius: 50%;
     cursor: pointer;
     padding: 10px;
-    border: 1px solid #e5e5e5;
-    color: #e5e5e5;
+    color: #191919;
     background: white;
+    border: 2px solid lightgrey;
 }
 .round-btn:hover {
-    color: white;
-    background: #e5e5e5;
+    background: lightgrey;
 }
 #submit {
     width: 100px;
     margin: 30px auto;
+}
+@media (max-width: 850px) {
+    .ing-steps {
+        flex-direction: column;
+        align-items: center;
+        padding-bottom: 40px;
+        border-bottom: 4px double white;
+    }
+    .steps {
+        width: 80%;
+        border-right: none;
+        margin-top: 30px;
+    }
+    .ingredients {
+        padding-bottom: 20px;
+        width: 80%;
+        border-left: none;
+    }
+    .input-section {
+        flex-direction: column;
+        padding: 5px;
+    }
+    .plus {
+        display: none;
+    }
+    .tablet-plus {
+        display: block;
+        width: 130px;
+    }
+    .list {
+        width: 90%;
+    }
+    #submit {
+        width: 130px;
+    }
 }
 </style>

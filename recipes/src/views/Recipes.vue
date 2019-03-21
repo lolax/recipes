@@ -46,15 +46,19 @@ export default {
 
 <style scoped>
     .recipe {
+        background: #d3d3d3;
         display: flex;
         align-items: center;
         justify-content: space-between;
         padding: 20px;
         width: 400px;
         margin: 30px auto;
-        border: 1px solid black;
+        -webkit-box-shadow: 0 0 3px 1px grey;
+        -moz-box-shadow: 0 0 3px 1px grey;
+        box-shadow: 0 0 3px 1px grey;
     }
     .link {
+        color: #191919;
         width: 250px;
         margin: 0;
         padding: 0;
@@ -62,6 +66,9 @@ export default {
         flex-direction: column;
         justify-content: flex-start;
         text-align: start;
+    }
+    .link:hover {
+        background: lightgrey;
     }
     a {
         border: 0;
@@ -71,15 +78,16 @@ export default {
         outline: 0;
     }
     .dish {
-        font-size: 18px;
+        font-size: 20px;
         font-weight: 600;
         margin: 2px 0;
     }
     .desc {
-        margin: 2px 0;
+        font-size: 18px;
+        margin: 2px;
     }
     .time {
-        margin: 2px 0;
+        margin: 2px;
     }
     .btns {
         display: flex;
@@ -98,5 +106,10 @@ export default {
         border: 1px solid black;
         color: white;
         background: black;
+    }
+    @media (max-width: 500px) {
+        .recipe {
+            width: 88%;
+        }
     }
 </style>

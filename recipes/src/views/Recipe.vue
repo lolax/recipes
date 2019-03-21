@@ -72,17 +72,20 @@ export default {
 <style scoped>
     .dish {
         width: 20%;
-        font-size: 24px;
+        font-size: 26px;
         font-weight: 600;
         margin: 10px auto;
         padding: 10px;
-        border-bottom: 4px double black;
+        border-bottom: 4px double white;
+        color: white;
     }
     .desc {
         font-size: 20px;
+        color: white;
     }
     .time {
         font-size: 20px;
+        color: white;
     }
     .details {
         display: flex;
@@ -92,7 +95,8 @@ export default {
     }
     .ingredients {
         font-size: 20px;
-        border: 1px solid #8daafb;
+        border: 1px solid lightgrey;
+        color: white;
         padding: 10px;
         border-radius: 5px;
         width: 50%;
@@ -100,7 +104,8 @@ export default {
     }
     .steps {
         font-size: 20px;
-        border: 1px solid #8daafb;
+        border: 1px solid lightgrey;
+        color: white;
         padding: 10px;
         border-radius: 5px;
         width: 50%;
@@ -118,7 +123,7 @@ export default {
         padding: 10px;
         height: 100px;
         cursor: pointer;
-        background: #8daafb;
+        background: white;
         color: black;
     }
     .btn:hover {

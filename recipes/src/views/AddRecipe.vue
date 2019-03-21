@@ -46,6 +46,7 @@
                             />
                         </div>
                         <div class="round-btn plus" @click="addIngredient">+</div>
+                        <div class="tablet-plus btn" @click="addIngredient">add ingredient</div>
                     </div>
                     <div class="list" v-for="i in ingredients" :key="i.id">
                         <div class="list-item">{{i.quantity}} {{i.ingredient}}</div>
@@ -72,6 +73,7 @@
                             />
                         </div>
                         <div class="round-btn plus" @click="addStep">+</div>
+                        <div class="tablet-plus btn" @click="addStep">add step</div>
                     </div>
                     <div class="list" v-for="s in steps" :key="s.id">
                         <div class="list-item">{{s.order}}. {{s.step}}</div>
@@ -225,6 +227,7 @@ export default {
 }
 .ing-steps {
     display: flex;
+    flex-direction: row;
     justify-content: space-between;
     width: 100%;
 }
@@ -245,7 +248,10 @@ export default {
     padding: 0 15px 20px 0;
 }
 .plus {
-    margin-top: 32px;
+    margin: 32px 5px 0;
+}
+.tablet-plus {
+    display: none;
 }
 .list {
     padding-right: 15px;
@@ -266,7 +272,7 @@ export default {
     border-radius: 50%;
     cursor: pointer;
     padding: 10px;
-    color: black;
+    color: #191919;
     background: white;
     border: 2px solid lightgrey;
 }
@@ -274,7 +280,36 @@ export default {
     background: lightgrey;
 }
 #submit {
-    width: 66px;
+    width: 120px;
     margin: 30px auto;
+}
+@media (max-width: 850px) {
+    .ing-steps {
+        flex-direction: column;
+        align-items: center;
+    }
+    .steps {
+        width: 80%;
+        border-right: none;
+        margin-top: 30px;
+    }
+    .ingredients {
+        padding-bottom: 20px;
+        width: 80%;
+        border-left: none;
+    }
+    .input-section {
+        flex-direction: column;
+    }
+    .plus {
+        display: none;
+    }
+    .tablet-plus {
+        display: block;
+        width: 130px;
+    }
+    .list {
+        width: 90%;
+    }
 }
 </style>
