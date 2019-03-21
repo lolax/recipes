@@ -74,6 +74,7 @@
     -moz-box-shadow: 0;
     box-shadow: 0;
     cursor: pointer;
+    outline: none;
   }
   .link:hover {
     background: white;
