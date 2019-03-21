@@ -1,5 +1,5 @@
 {
-  "name": "L-L-Recipes",
+  "name": "Recipes",
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
@@ -19,5 +19,9 @@
   },
   "devDependencies": {
     "nodemon": "^1.18.9"
+  },
+  "engines": {
+    "node": "10.0.0",
+    "npm": "5.6.0"
   }
 }
