@@ -105,7 +105,7 @@ export default {
         const id = this.$route.params.id
         this.recipe_id = id
         axios
-            .get(`http://localhost:3333/recipes/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
+            .get(`https://lolarecipes-backend.herokuapp.com/recipes/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
             .then(res => {
                 this.recipe = res.data[0]
                 this.dish = res.data[0].dish
@@ -114,11 +114,11 @@ export default {
             })
             .catch(err => (this.message = err))
         axios
-            .get(`http://localhost:3333/ingredients/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
+            .get(`https://lolarecipes-backend.herokuapp.com/ingredients/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
             .then(res => (this.ingredients = res.data))
             .catch(err => (this.message = err))
         axios
-            .get(`http://localhost:3333/steps/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
+            .get(`https://lolarecipes-backend.herokuapp.com/steps/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
             .then(res => (this.steps = res.data))
             .catch(err => (this.message = err))
     },
@@ -157,21 +157,21 @@ export default {
             if (dish && description && time) {
                 const editedDish = { dish, description, time }
                 axios  
-                    .put(`http://localhost:3333/recipes/${recipe_id}`, editedDish, {headers: { Authorization: localStorage.getItem("token") }})
+                    .put(`https://lolarecipes-backend.herokuapp.com/recipes/${recipe_id}`, editedDish, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => (this.message = "Dish updated"))
                     .catch(err => (this.message = "Sorry, there was an error"))
             } else {
                 this.message = "Please enter the dish name, description, and preparation time."
             } if (steps.length > 0) {
                 axios  
-                    .put(`http://localhost:3333/steps/${recipe_id}`, steps, {headers: { Authorization: localStorage.getItem("token") }})
+                    .put(`https://lolarecipes-backend.herokuapp.com/steps/${recipe_id}`, steps, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => (this.message = "Steps updated."))
                     .catch(err => (this.message = "Sorry, there was an error"))
             } else {
                 this.message = "Please add some steps."
             } if (ingredients.length > 0) {
                 axios
-                    .put(`http://localhost:3333/ingredients/${recipe_id}`, ingredients, {headers: { Authorization: localStorage.getItem("token") }})
+                    .put(`https://lolarecipes-backend.herokuapp.com/ingredients/${recipe_id}`, ingredients, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => (this.message = "Ingredients updated."))
                     .catch(err => (this.message = "Sorry, there was an error"))
             } else {

@@ -117,7 +117,7 @@ export default {
             if (dish && description && time) {
                 const newDish = { dish, description, time }
                 axios  
-                    .post("http://localhost:3333/recipes", newDish, {headers: { Authorization: localStorage.getItem("token") }})
+                    .post("https://lolarecipes-backend.herokuapp.com/recipes", newDish, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => {
                         this.recipe_id = res.data[0]
                         this.part = 2
@@ -167,7 +167,7 @@ export default {
             const { steps, ingredients } = this
             if (steps.length > 0) {
                 axios  
-                    .post("http://localhost:3333/steps", steps, {headers: { Authorization: localStorage.getItem("token") }})
+                    .post("https://lolarecipes-backend.herokuapp.com/steps", steps, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => {
                         this.message = "Recipe added."
                         this.steps = []
@@ -178,7 +178,7 @@ export default {
                 this.message = "Please add some steps."
             } if (ingredients.length > 0) {
                 axios  
-                    .post("http://localhost:3333/ingredients", ingredients, {headers: { Authorization: localStorage.getItem("token") }})
+                    .post("https://lolarecipes-backend.herokuapp.com/ingredients", ingredients, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => {
                         this.message = "Recipe added."
                         this.ingredients = []
