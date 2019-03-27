@@ -260,6 +260,9 @@ export default {
 .round-btn:hover {
     background: lightgrey;
 }
+.tablet-plus {
+    display: none;
+}
 #submit {
     width: 100px;
     margin: 30px auto;
