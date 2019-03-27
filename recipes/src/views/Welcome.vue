@@ -54,7 +54,7 @@
                                     .auth().currentUser
                                     .getIdToken(true)
                                     .then(token => localStorage.setItem('token', token))
-                                this.$router.push("/recipes")
+                                    .then(() => this.$router.push("/recipes"))
                             },
                             (err) => this.message = err.message
                         )
