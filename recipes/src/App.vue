@@ -25,6 +25,11 @@
         this.validated = true
       }
     },
+    updated() {
+      if (localStorage.getItem('token')) {
+        this.validated = true
+      }
+    },
     methods: {
       logout() {
         firebase
