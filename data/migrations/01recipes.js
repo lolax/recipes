@@ -5,7 +5,7 @@ exports.up = function(knex, Promise) {
     table.string('dish', 255).notNullable()
     table.text('description').notNullable()
     table.integer('time').notNullable()
-    table.string('uid').notNullable()
+    table.text('uid').notNullable()
   })
 };
 
