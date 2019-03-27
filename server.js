@@ -70,10 +70,14 @@ server.post('/recipes', (req, res) => {
     const { uid } = req
     const { dish, description, time } = req.body
     const newRecipe = { dish, description, time, uid }
-    db('recipes')
+    if (dish && description && time && uid) {
+        db('recipes')
         .insert(newRecipe)
         .then(id => res.status(201).json(id))
         .catch(err => res.status(500).json(err))
+    } else {
+        res.status(422).json({ message: 'Please enter all fields.'})
+    }
 })
 
 server.put('/recipes/:id', (req, res) => {
@@ -81,17 +85,23 @@ server.put('/recipes/:id', (req, res) => {
     const { id } = req.params
     const { dish, description, time } = req.body
     const updatedRecipe = { dish, description, time, uid }
-    db('recipes')
+    if (dish && description && time && uid) {
+        db('recipes')
         .where({ uid, id })
         .update(updatedRecipe)
         .then(id => res.status(201).json(id))
         .catch(err => res.status(500).json(err))
+    } else {
+        res.status(422).json({ message: 'Please enter all fields.'})
+    }
+    
 })
 
 server.delete('/recipes/:id', (req, res) => {
     const { uid } = req
     const { id } = req.params
-    db('recipes')
+    if (uid && id) {
+        db('recipes')
         .where({ uid, id })
         .del()
         .then(count => count > 0 ? 
@@ -99,6 +109,7 @@ server.delete('/recipes/:id', (req, res) => {
             res.status(400).json({ message: 'Delete failed :(' })
         )
         .catch(err => res.status(500).json(err))
+    }
 })
 
 const get = tbl => {
