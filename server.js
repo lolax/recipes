@@ -72,9 +72,10 @@ server.post('/recipes', (req, res) => {
     const newRecipe = { dish, description, time, uid }
     if (dish && description && time && uid) {
         db('recipes')
-        .insert(newRecipe)
-        .then(id => res.status(201).json(id))
-        .catch(err => res.status(500).json(err))
+            .returning('id')
+            .insert(newRecipe)
+            .then(id => res.status(201).json(id))
+            .catch(err => res.status(500).json(err))
     } else {
         res.status(422).json({ message: 'Please enter all fields.'})
     }
@@ -87,10 +88,11 @@ server.put('/recipes/:id', (req, res) => {
     const updatedRecipe = { dish, description, time, uid }
     if (dish && description && time && uid) {
         db('recipes')
-        .where({ uid, id })
-        .update(updatedRecipe)
-        .then(id => res.status(201).json(id))
-        .catch(err => res.status(500).json(err))
+            .where({ uid, id })
+            .returning('id')
+            .update(updatedRecipe)
+            .then(id => res.status(201).json(id))
+            .catch(err => res.status(500).json(err))
     } else {
         res.status(422).json({ message: 'Please enter all fields.'})
     }
@@ -134,6 +136,7 @@ const getById = tbl => {
 const add = tbl => {
     server.post(`/${tbl}`, (req, res) => {
         db(tbl)
+            .returning('id')
             .insert(req.body)
             .then(id => res.status(201).json(id))
             .catch(err => res.status(500).json(err))
@@ -145,6 +148,7 @@ const update = tbl => {
         const { id } = req.params
         db(tbl)
             .where({ id })
+            .returning('id')
             .update(req.body)
             .then(count => count > 0 ? 
                 res.status(200).json(count) :
