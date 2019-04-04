@@ -32,13 +32,13 @@ export default {
             axios
                 .delete(`https://lolarecipes-backend.herokuapp.com/recipes/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
                 .then(res => (this.fetch()))
-                .catch(err => (this.message = err))
+                .catch(err => (this.message = err.message))
         },
         fetch() {
             axios
                 .get("https://lolarecipes-backend.herokuapp.com/recipes/", {headers: { Authorization: localStorage.getItem("token") }})
                 .then(res => (this.recipes = res.data))
-                .catch(err => (this.message = err))
+                .catch(err => (this.message = err.message))
         }
     }
 }

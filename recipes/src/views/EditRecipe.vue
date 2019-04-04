@@ -112,15 +112,15 @@ export default {
                 this.description = res.data[0].description
                 this.time = res.data[0].time
             })
-            .catch(err => (this.message = err))
+            .catch(err => (this.message = err.message))
         axios
             .get(`https://lolarecipes-backend.herokuapp.com/ingredients/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
             .then(res => (this.ingredients = res.data))
-            .catch(err => (this.message = err))
+            .catch(err => (this.message = err.message))
         axios
             .get(`https://lolarecipes-backend.herokuapp.com/steps/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
             .then(res => (this.steps = res.data))
-            .catch(err => (this.message = err))
+            .catch(err => (this.message = err.message))
     },
     methods: {
         addIngredient() {
@@ -166,14 +166,14 @@ export default {
                 axios  
                     .put(`https://lolarecipes-backend.herokuapp.com/steps/${recipe_id}`, steps, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => (this.message = "Steps updated."))
-                    .catch(err => (this.message = "Sorry, there was an error"))
+                    .catch(() => (this.message = "Sorry, there was an error"))
             } else {
                 this.message = "Please add some steps."
             } if (ingredients.length > 0) {
                 axios
                     .put(`https://lolarecipes-backend.herokuapp.com/ingredients/${recipe_id}`, ingredients, {headers: { Authorization: localStorage.getItem("token") }})
                     .then(res => (this.message = "Ingredients updated."))
-                    .catch(err => (this.message = "Sorry, there was an error"))
+                    .catch(() => (this.message = "Sorry, there was an error"))
             } else {
                 this.message = "Please add some ingredients."
             } 

@@ -48,22 +48,22 @@ export default {
         axios
             .get(`https://lolarecipes-backend.herokuapp.com/recipes/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
             .then(res => (this.recipe = res.data[0]))
-            .catch(err => (this.message = err))
+            .catch(err => (this.message = err.message))
         axios
             .get(`https://lolarecipes-backend.herokuapp.com/ingredients/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
             .then(res => (this.ingredients = res.data))
-            .catch(err => (this.message = err))
+            .catch(err => (this.message = err.message))
         axios
             .get(`https://lolarecipes-backend.herokuapp.com/steps/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
             .then(res => (this.steps = res.data.sort((a, b) => a.order - b.order)))
-            .catch(err => (this.message = err))
+            .catch(err => (this.message = err.message))
     },
     methods: {
         remove(id) {
             axios
                 .delete(`https://lolarecipes-backend.herokuapp.com/recipes/${id}`, {headers: { Authorization: localStorage.getItem("token") }})
                 .then(res => (this.$router.push("/recipes/")))
-                .catch(err => (this.message = err))
+                .catch(err => (this.message = err.message))
         }
     }
 }

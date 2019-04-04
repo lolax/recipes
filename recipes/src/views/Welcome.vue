@@ -136,6 +136,7 @@
         height: auto;
     }
     .message {
+        color: white;
         font-size: 18px;
         margin: 10px;
     }
