@@ -21,10 +21,10 @@
             </div>
             <div class="btns">
                 <div class="btn edit" @click="$router.push(`/recipes/${recipe.id}/edit`)">
-                    <div>edit</div>
+                    <div class="edit-text">edit</div>
                 </div>
                 <div class="btn delete" @click="remove(recipe.id)">
-                    <div>delete</div>
+                    <div class="delete-text">delete</div>
                 </div>
             </div>
         </div>
@@ -125,19 +125,28 @@ export default {
         cursor: pointer;
         background: white;
         color: black;
+        position: relative;
     }
     .btn:hover {
         background: black;
         color: white;
     }
     .edit {
-        justify-content: start;
-        align-items: start;
         clip-path: polygon(0 0, 0 100%, 100% 0);
     }
+    .edit-text {
+        position: absolute;
+        z-index: 2;
+        top: 10px;
+        left: 10px;
+    }
+    .delete-text {
+        position: absolute;
+        z-index: 2;
+        bottom: 10px;
+        right: 10px;
+    }
     .delete {
-        justify-content: end;
-        align-items: end;
         clip-path: polygon(100% 0, 0 100%, 100% 100%);
     }
     span {

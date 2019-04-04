@@ -294,6 +294,8 @@ export default {
     .tablet-plus {
         display: block;
         width: 130px;
+        margin-top:5px;
+        border-radius: 20px;
     }
     .list {
         width: 90%;
